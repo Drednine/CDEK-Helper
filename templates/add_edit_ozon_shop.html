@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="content-section">
+        <form method="POST" action="">
+            {{ form.hidden_tag() }} {# CSRF token #}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">{{ legend }}</legend>
+                <div class="form-group">
+                    {{ form.shop_name.label(class="form-control-label") }}
+                    {% if form.shop_name.errors %}
+                        {{ form.shop_name(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.shop_name.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.shop_name(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form.client_id.label(class="form-control-label") }}
+                    {% if form.client_id.errors %}
+                        {{ form.client_id(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.client_id.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.client_id(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form.api_key.label(class="form-control-label") }}
+                    {% if form.api_key.errors %}
+                        {{ form.api_key(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.api_key.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.api_key(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form.warehouse_name.label(class="form-control-label") }}
+                    <small class="form-text text-muted">Оставьте пустым, если используется только один склад rFBS по умолчанию на аккаунте Ozon, или укажите точное название вашего склада rFBS (например, "rFBS_ИМЯ_ГОРОДА_ИМЯ_СКЛАДА").</small>
+                    {% if form.warehouse_name.errors %}
+                        {{ form.warehouse_name(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.warehouse_name.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.warehouse_name(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+            </fieldset>
+            <div class="form-group mt-4">
+                {{ form.submit(class="btn btn-outline-info") }}
+                <a href="{{ url_for('account') }}" class="btn btn-outline-secondary">Отмена</a>
+            </div>
+        </form>
+    </div>
+{% endblock content %} 

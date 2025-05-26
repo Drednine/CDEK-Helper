@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="content-section">
+        <h2>{{ title }} - {{ current_user.email }}</h2>
+        <hr>
+        <h3>Управление магазинами Ozon</h3>
+        <a href="{{ url_for('add_ozon_shop') }}" class="btn btn-primary mb-3">Добавить магазин Ozon</a>
+        
+        {% if ozon_shops %}
+            <table class="table table-hover table-sm">
+                <thead class="thead-light">
+                    <tr>
+                        <th>Название магазина</th>
+                        <th>Client ID (Ozon)</th>
+                        <th>API Key (Ozon)</th>
+                        <th>Склад (rFBS)</th>
+                        <th>По умолчанию</th>
+                        <th>Действия</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for shop in ozon_shops %}
+                        <tr>
+                            <td>{{ shop.shop_name }}</td>
+                            <td>{{ shop.client_id[:15] }}...</td> {# Показываем только часть для краткости #}
+                            <td>{{ shop.api_key[:15] }}...</td>   {# Показываем только часть для краткости #}
+                            <td>{{ shop.warehouse_name if shop.warehouse_name else 'rFBS' }}</td>
+                            <td>
+                                {% if shop.is_default %}
+                                    <span class="badge badge-success">Да</span>
+                                {% else %}
+                                    <form action="{{ url_for('set_default_ozon_shop', shop_id=shop.id) }}" method="POST" style="display: inline;">
+                                        <button type="submit" class="btn btn-outline-secondary btn-sm">Сделать по умолчанию</button>
+                                    </form>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <a href="{{ url_for('edit_ozon_shop', shop_id=shop.id) }}" class="btn btn-info btn-sm">Редактировать</a>
+                                <form action="{{ url_for('delete_ozon_shop', shop_id=shop.id) }}" method="POST" style="display: inline;" onsubmit="return confirm('Вы уверены, что хотите удалить этот магазин Ozon?');">
+                                    <button type="submit" class="btn btn-danger btn-sm">Удалить</button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <div class="alert alert-info">
+                У вас пока нет добавленных магазинов Ozon. <a href="{{ url_for('add_ozon_shop') }}">Добавить сейчас?</a>
+            </div>
+        {% endif %}
+
+        <hr class="mt-5">
+        <h3>Управление аккаунтами CDEK</h3>
+        <a href="{{ url_for('add_cdek_account') }}" class="btn btn-primary mb-3">Добавить аккаунт CDEK</a>
+        
+        {% if cdek_accounts %}
+            <table class="table table-hover table-sm">
+                <thead class="thead-light">
+                    <tr>
+                        <th>Название аккаунта</th>
+                        <th>Client ID (CDEK)</th>
+                        <th>Client Secret (CDEK)</th>
+                        <th>По умолчанию</th>
+                        <th>Действия</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for acc in cdek_accounts %}
+                        <tr>
+                            <td>{{ acc.account_name }}</td>
+                            <td>{{ acc.client_id[:15] }}...</td>
+                            <td>{{ acc.client_secret[:15] }}...</td>
+                            <td>
+                                {% if acc.is_default %}
+                                    <span class="badge badge-success">Да</span>
+                                {% else %}
+                                    <form action="{{ url_for('set_default_cdek_account', account_id=acc.id) }}" method="POST" style="display: inline;">
+                                        <button type="submit" class="btn btn-outline-secondary btn-sm">Сделать по умолчанию</button>
+                                    </form>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <a href="{{ url_for('edit_cdek_account', account_id=acc.id) }}" class="btn btn-info btn-sm">Редактировать</a>
+                                <form action="{{ url_for('delete_cdek_account', account_id=acc.id) }}" method="POST" style="display: inline;" onsubmit="return confirm('Вы уверены, что хотите удалить этот аккаунт CDEK?');">
+                                    <button type="submit" class="btn btn-danger btn-sm">Удалить</button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <div class="alert alert-info">
+                У вас пока нет добавленных аккаунтов CDEK. <a href="{{ url_for('add_cdek_account') }}">Добавить сейчас?</a>
+            </div>
+        {% endif %}
+        
+    </div>
+{% endblock content %} 
