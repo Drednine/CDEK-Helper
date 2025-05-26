@@ -764,5 +764,5 @@ def set_default_cdek_account(account_id):
     return redirect(url_for('account'))
 
 if __name__ == '__main__':
-    # db.create_all() # Убрано, так как теперь используем Flask-Migrate
-    app.run(debug=True) 
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port, debug=True)
